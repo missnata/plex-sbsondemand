@@ -1,21 +1,22 @@
 import re
 
 VIDEO_BASE_URL = 'http://videocdn.sbs.com.au/u/video/'
+METADATA_BASE_URL = 'http://www.sbs.com.au/api/video_feed/f/Bgtm9B/search/'
 
 def NormalizeURL(url):
 	return url
 
 
 def MetadataObjectForURL(url):
-	#json = JSON.ObjectFromURL(url)
-#link.theplatform.com/s/Bgtm9B/MHdzUSPChtXS?feed=Video%20-%20Single&mbr=true&manifest=m3u&audiostream=on&ord=4065639&policy=22428&d1=video.theworldgame.sbs.com.au&d2=sec30ios&d3=preroll&dm1=video.theworldgame.sbs.com.au&dm2=sec30midrollios&dm3=midroll&format=Script&width=320&height=172&callback=tpJSONLoaderCallback&context=d3e5
-#link.theplatform.com/s/Bgtm9B/7dRdNrsAAjfL?feed=Video%20-%20Single&mbr=true&manifest=m3u&audiostream=on&ord=4065639&policy=22428&d1=video.theworldgame.sbs.com.au&d2=sec30ios&d3=preroll&dm1=video.theworldgame.sbs.com.au&dm2=sec30midrollios&dm3=midroll&format=Script&width=320&height=172&callback=tpJSONLoaderCallback&context=d3e5
+	json = JSON.ObjectFromURL(METADATA_BASE_URL + url.split('/')[-1])
 
 	return EpisodeObject(
-		show = 'show',
-		summary = 'summary',
-		#thumb = json.get('thumbnail'),
-		title = 'title'
+		duration = int(json.get('media$content')[0].get('plfile$duration')) * 1000,
+		originally_available_at = Datetime.FromTimestamp(int(json.get('pubDate')/1000)),
+		show = json.get('pl1$programName'),
+		summary = json.get('description'),
+		thumb = json.get('plmedia$defaultThumbnailUrl'),
+		title = json.get('title')
 	)
 
 

@@ -15,7 +15,8 @@ class Item(object):
 			item.id = json.get('id')
 
 		if json.get('url'):
-			item.path = json.get('url')
+			# changing the url so that it only returns the full eppisodes and no clips/extras
+			item.path = json.get('url').replace('sbs-app-section-sbstv','sbs-app-section-programs')
 
 		if json.get('thumbnail'):
 			item.thumb = json.get('thumbnail')

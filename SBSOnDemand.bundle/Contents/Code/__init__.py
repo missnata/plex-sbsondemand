@@ -31,7 +31,7 @@ def GetList():
     json = JSON.ObjectFromURL(Config.MENU_URL, cacheTime=Config.MENU_CACHE)
 
     menu = []
-    for main_menu in json['get']['response']['Menu']['children']: #only 1 Browse
+    for main_menu in json['get']['response']['Menu']['children']:
         for sub_menu in main_menu['children']:
             if sub_menu['clickable'] == '1' or sub_menu['clickable'] == 1:
                 menu.append(Item.MapFromJson(sub_menu))
@@ -42,11 +42,12 @@ def GetChildren(id):
     json = JSON.ObjectFromURL(Config.MENU_URL, cacheTime=Config.MENU_CACHE)
 
     menu = []
-    for main_menu in json['get']['response']['Menu']['children']: #only 1 Browse
+    for main_menu in json['get']['response']['Menu']['children']:
         for sub_menu in main_menu['children']:
             if sub_menu['id'] == id:
                 for item in sub_menu['children']:
                     menu.append(Item.MapFromJson(item))
+                return menu
 
     return menu
 
